@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.k2data.kbc.audit.dao.AuditLogMapper">
+    <resultMap id="BaseResultMap" type="com.k2data.kbc.audit.model.AuditLog">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="c_creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="c_request_start_time" jdbcType="TIMESTAMP" property="requestStartTime"/>
+        <result column="c_ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="c_request_url" jdbcType="VARCHAR" property="requestUrl"/>
+        <result column="c_request_method" jdbcType="VARCHAR" property="requestMethod"/>
+        <result column="c_user_agent" jdbcType="VARCHAR" property="userAgent"/>
+        <result column="c_operation" jdbcType="VARCHAR" property="operation"/>
+        <result column="c_request_finsh_time" jdbcType="INTEGER" property="requestFinshTime"/>
+        <result column="c_return_time" jdbcType="TIMESTAMP" property="returnTime"/>
+        <result column="c_return_data" jdbcType="VARCHAR" property="returnData"/>
+        <result column="c_class_method_path" jdbcType="LONGVARCHAR" property="classMethodPath"/>
+        <result column="c_class_method_name" jdbcType="VARCHAR" property="classMethodName"/>
+        <result column="c_params" jdbcType="LONGVARCHAR" property="params"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.k2data.kbc.audit.model.AuditLog">
+        insert into kbc_t_audit_log (
+        id, c_creator, c_request_start_time,
+        c_ip, c_request_url, c_request_method,
+        c_user_agent, c_operation, c_request_finsh_time,
+        c_return_time, c_return_data, c_class_method_path,c_class_method_name,
+        c_params)
+    values (
+        #{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{requestStartTime,jdbcType=TIMESTAMP},
+        #{ip,jdbcType=VARCHAR}, #{requestUrl,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR},
+        #{userAgent,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{requestFinshTime,jdbcType=INTEGER},
+        #{returnTime,jdbcType=TIMESTAMP}, #{returnData,jdbcType=VARCHAR}, #{classMethodPath,jdbcType=LONGVARCHAR},
+        #{classMethodName,jdbcType=VARCHAR},
+        #{params,jdbcType=LONGVARCHAR}
+         )
+    </insert>
+
+    <select id="list" resultMap="BaseResultMap" parameterType="map">
+        select id, c_creator, c_request_start_time, c_ip, c_request_url, c_request_method,
+        c_user_agent, c_operation, c_request_finsh_time, c_return_time, c_return_data,
+        c_class_method_path,c_class_method_name,
+        c_params
+        from kbc_t_audit_log
+        <where>
+            <if test="creator != null">
+                and c_creator like CONCAT('%', #{creator}, '%')
+            </if>
+            <if test="id != null">
+                and id =#{id}
+            </if>
+            <if test="beginDate != null">
+                <![CDATA[ and c_request_start_time >= #{beginDate} ]]>
+            </if>
+            <if test="endDate != null">
+                <![CDATA[ and c_request_start_time <= #{endDate} ]]>
+            </if>
+        </where>
+    </select>
+</mapper>
