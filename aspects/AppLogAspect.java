@@ -1,6 +1,7 @@
 package com.k2data.kbc.audit.aspects;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.k2data.kbc.audit.Utils.LogUtil;
 import com.k2data.kbc.audit.Utils.RequestUtil;
 import com.k2data.kbc.audit.model.AuditLog;
@@ -80,7 +81,8 @@ public class AppLogAspect {
     @AfterThrowing(value = "serviceStatistics()", throwing = "e")
     public void doAfterThrowing(Throwable e) {
         logger.info("doAfterThrowing(){}" + e);
-        exLog.setExceptionJson(JSON.toJSONString(e));
+        exLog.setExceptionJson(JSON.toJSONString(e, SerializerFeature.DisableCircularReferenceDetect,
+            SerializerFeature.WriteMapNullValue));
         exLog.setExceptionCreateTime(new Date(System.currentTimeMillis()));
         exLog.setExceptionMessage(e.getMessage());
         LogUtil.saveExLogRunnable(exLog);

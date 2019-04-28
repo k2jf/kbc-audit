@@ -1,6 +1,7 @@
 package com.k2data.kbc.audit.Utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -89,7 +90,8 @@ public class RequestUtil {
             Object paramsArgsValue = paramsArgsValues[i];
             paramMap.put(paramsArgsName, paramsArgsValue);
         }
-        joinPointInfoMap.put("paramMap", JSON.toJSONString(paramMap));
+        joinPointInfoMap.put("paramMap", JSON.toJSONString(paramMap, SerializerFeature.DisableCircularReferenceDetect,
+            SerializerFeature.WriteMapNullValue));
         return joinPointInfoMap;
     }
 

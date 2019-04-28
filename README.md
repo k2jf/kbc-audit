@@ -16,11 +16,11 @@ aop依赖
             <version>3.6</version>
         </dependency>
         
-fastjson json 依赖
+fastjson json 依赖注意版本
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.12</version>
+            <version>1.2.29</version>
         </dependency>
 #注意切面拦截包配置:使用标配置的方法
 
