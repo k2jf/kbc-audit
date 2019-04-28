@@ -1,4 +1,4 @@
-package com.k2data.kbc.audit.service.Impl;
+package com.k2data.kbc.audit.service.impl;
 
 import com.k2data.kbc.audit.dao.AuditLogMapper;
 import com.k2data.kbc.audit.model.AuditLog;

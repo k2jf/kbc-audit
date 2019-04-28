@@ -19,13 +19,9 @@ public class AuditLog {
 
     private String userAgent;
 
-    private String operation;
-
     private Long requestFinshTime;
 
     private Date returnTime;
-
-    private String returnData;
 
     private String classMethodPath;
 
@@ -98,14 +94,6 @@ public class AuditLog {
         this.userAgent = userAgent;
     }
 
-    public String getOperation() {
-        return operation;
-    }
-
-    public void setOperation(String operation) {
-        this.operation = operation;
-    }
-
     public Long getRequestFinshTime() {
         return requestFinshTime;
     }
@@ -120,14 +108,6 @@ public class AuditLog {
 
     public void setReturnTime(Date returnTime) {
         this.returnTime = returnTime;
-    }
-
-    public String getReturnData() {
-        return returnData;
-    }
-
-    public void setReturnData(String returnData) {
-        this.returnData = returnData;
     }
 
     public String getClassMethodPath() {

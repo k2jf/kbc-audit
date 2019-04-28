@@ -1,7 +1,7 @@
 # kbc-audit
 
-使用仅需加注解
-@Operation(value = "xxx功能")
+拦截Controller
+
 #pom 校验依赖
 aop依赖
         <dependency>
@@ -27,7 +27,6 @@ fastjson json 依赖
 
 # 使用说明
 创建数据表
-
 SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `kbc_t_audit_log`;
 CREATE TABLE `kbc_t_audit_log` (
@@ -41,14 +40,10 @@ CREATE TABLE `kbc_t_audit_log` (
   `c_class_method_name` varchar(255) COLLATE utf8_bin NOT NULL,
   `c_user_agent` varchar(300) COLLATE utf8_bin NOT NULL COMMENT '客户端信息',
   `c_params` text COLLATE utf8_bin,
-  `c_operation` varchar(255) COLLATE utf8_bin NOT NULL,
   `c_request_finsh_time` int(11) DEFAULT NULL COMMENT '请求耗时 ms',
   `c_return_time` datetime DEFAULT NULL COMMENT '接口返回时间',
   `c_return_data` text COLLATE utf8_bin COMMENT '接口返回值',
-  PRIMARY KEY (`id`),
-  KEY `sys_log_create_by` (`c_creator`),
-  KEY `sys_log_request_uri` (`c_request_url`),
-  KEY `sys_log_create_date` (`c_request_start_time`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='日志表';
 
 
@@ -60,5 +55,4 @@ CREATE TABLE `kbc_t_exception_log` (
   `c_exception_message` longtext COMMENT '异常信息',
   `c_exception_create_time` datetime DEFAULT NULL COMMENT '异常发生时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;

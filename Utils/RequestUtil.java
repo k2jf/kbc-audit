@@ -1,7 +1,6 @@
 package com.k2data.kbc.audit.Utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +17,6 @@ import org.aspectj.lang.JoinPoint;
 
 public class RequestUtil {
 
-    /**
-     * 获取ip地址,考虑代理情况
-     */
     public static String getRequestIp(HttpServletRequest request) throws Exception {
         if (null == request) {
             throw new Exception("HttpServletRequest is null");
@@ -75,10 +71,10 @@ public class RequestUtil {
             pos = Modifier.isStatic(ctMethod.getModifiers()) ? 0 : 1;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            throw new ClassNotFoundException("获取类实例失败");
+            throw new ClassNotFoundException("Failed to get class instance");
         } catch (NotFoundException e) {
             e.printStackTrace();
-            throw new NotFoundException("未找到参数类型");
+            throw new NotFoundException("Parameter type not found");
         }
         Map<String, Object> paramMap = new HashMap<>();
         Object[] paramsArgsValues = joinPoint.getArgs();
@@ -93,8 +89,7 @@ public class RequestUtil {
             Object paramsArgsValue = paramsArgsValues[i];
             paramMap.put(paramsArgsName, paramsArgsValue);
         }
-        joinPointInfoMap.put("paramMap", JSON.toJSONString(paramMap, SerializerFeature.DisableCircularReferenceDetect,
-            SerializerFeature.WriteMapNullValue));
+        joinPointInfoMap.put("paramMap", JSON.toJSONString(paramMap));
         return joinPointInfoMap;
     }
 

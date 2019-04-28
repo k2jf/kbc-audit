@@ -1,8 +1,6 @@
 package com.k2data.kbc.audit.controller;
 
 import com.k2data.kbc.api.KbcResponse;
-import com.k2data.kbc.audit.annotation.Operation;
-import com.k2data.kbc.audit.model.AuditLog;
 import com.k2data.kbc.audit.service.AuditLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,18 +19,22 @@ public class AuditLogController {
     @Autowired
     AuditLogService auditLogService;
 
-    @ApiOperation("获取审计日志列表")
-    @GetMapping(value = {"auditLogList", "auditLogList/{creator}", "auditLogList/{beginDate}/{endDate}",
-        "auditLogList/{creator}/{beginDate}/{endDate}"})
-    @Operation(value = "查询log列表")
-    public KbcResponse list(@PathVariable(required = false) String creator,
-        @PathVariable(required = false) String beginDate, @PathVariable(required = false) String endDate) {
+    @ApiOperation("get logs")
+    @GetMapping(value = {"logs"})
+    public KbcResponse list() {
         Map<String, Object> map = new HashMap<>();
-        map.put("creator", creator);
-        map.put("beginDate", beginDate);
-        map.put("endDate", endDate);
         KbcResponse response = new KbcResponse();
-        response.getBody().put("audiLogList", auditLogService.list(map));
+        response.getBody().put("logs", auditLogService.list(map));
+        return response;
+    }
+
+    @ApiOperation("get log")
+    @GetMapping(value = {"logs/{id}"})
+    public KbcResponse log(@PathVariable Integer id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        KbcResponse response = new KbcResponse();
+        response.getBody().put("log", auditLogService.list(map));
         return response;
     }
 }

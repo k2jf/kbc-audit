@@ -4,15 +4,13 @@ import com.k2data.kbc.audit.dao.AuditLogMapper;
 import com.k2data.kbc.audit.dao.ExceptionLogMapper;
 import com.k2data.kbc.audit.model.AuditLog;
 import com.k2data.kbc.audit.model.ExceptionLog;
-import com.sun.jndi.cosnaming.ExceptionMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class LogUtils {
+public class LogUtil {
 
 
-    private static AuditLogMapper auditLogDao = SpringContextHolder.getBean(AuditLogMapper.class);
+    private static AuditLogMapper auditLogDao = SpringContextHolderUtil.getBean(AuditLogMapper.class);
 
-    private static ExceptionLogMapper exLogDao = SpringContextHolder.getBean(ExceptionLogMapper.class);
+    private static ExceptionLogMapper exLogDao = SpringContextHolderUtil.getBean(ExceptionLogMapper.class);
 
     public static void saveLog(AuditLog log) {
         new SaveLogRunnable(log).run();

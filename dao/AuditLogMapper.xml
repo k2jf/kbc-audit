@@ -9,10 +9,8 @@
         <result column="c_request_url" jdbcType="VARCHAR" property="requestUrl"/>
         <result column="c_request_method" jdbcType="VARCHAR" property="requestMethod"/>
         <result column="c_user_agent" jdbcType="VARCHAR" property="userAgent"/>
-        <result column="c_operation" jdbcType="VARCHAR" property="operation"/>
         <result column="c_request_finsh_time" jdbcType="INTEGER" property="requestFinshTime"/>
         <result column="c_return_time" jdbcType="TIMESTAMP" property="returnTime"/>
-        <result column="c_return_data" jdbcType="VARCHAR" property="returnData"/>
         <result column="c_class_method_path" jdbcType="LONGVARCHAR" property="classMethodPath"/>
         <result column="c_class_method_name" jdbcType="VARCHAR" property="classMethodName"/>
         <result column="c_params" jdbcType="LONGVARCHAR" property="params"/>
@@ -22,14 +20,14 @@
         insert into kbc_t_audit_log (
         id, c_creator, c_request_start_time,
         c_ip, c_request_url, c_request_method,
-        c_user_agent, c_operation, c_request_finsh_time,
-        c_return_time, c_return_data, c_class_method_path,c_class_method_name,
+        c_user_agent, c_request_finsh_time,
+        c_return_time, c_class_method_path,c_class_method_name,
         c_params)
     values (
         #{id,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{requestStartTime,jdbcType=TIMESTAMP},
         #{ip,jdbcType=VARCHAR}, #{requestUrl,jdbcType=VARCHAR}, #{requestMethod,jdbcType=VARCHAR},
-        #{userAgent,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR}, #{requestFinshTime,jdbcType=INTEGER},
-        #{returnTime,jdbcType=TIMESTAMP}, #{returnData,jdbcType=VARCHAR}, #{classMethodPath,jdbcType=LONGVARCHAR},
+        #{userAgent,jdbcType=VARCHAR}, #{requestFinshTime,jdbcType=INTEGER},
+        #{returnTime,jdbcType=TIMESTAMP}, #{classMethodPath,jdbcType=LONGVARCHAR},
         #{classMethodName,jdbcType=VARCHAR},
         #{params,jdbcType=LONGVARCHAR}
          )
@@ -37,7 +35,7 @@
 
     <select id="list" resultMap="BaseResultMap" parameterType="map">
         select id, c_creator, c_request_start_time, c_ip, c_request_url, c_request_method,
-        c_user_agent, c_operation, c_request_finsh_time, c_return_time, c_return_data,
+        c_user_agent, c_request_finsh_time, c_return_time,
         c_class_method_path,c_class_method_name,
         c_params
         from kbc_t_audit_log

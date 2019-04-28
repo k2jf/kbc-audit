@@ -1,19 +1,13 @@
 package com.k2data.kbc.audit.aspects;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.k2data.kbc.audit.Utils.LogUtils;
+import com.k2data.kbc.audit.Utils.LogUtil;
 import com.k2data.kbc.audit.Utils.RequestUtil;
-import com.k2data.kbc.audit.annotation.Operation;
-import com.k2data.kbc.audit.dao.AuditLogMapper;
 import com.k2data.kbc.audit.model.AuditLog;
 import com.k2data.kbc.audit.model.ExceptionLog;
 import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.http.client.utils.DateUtils;
-import org.apache.ibatis.javassist.NotFoundException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -48,58 +42,47 @@ public class AppLogAspect {
     /**
      * 设置切点
      */
-    @Pointcut(value = "@annotation(operation)")
-    public void serviceStatistics(Operation operation) {
+    @Pointcut("execution(* com.k2data.kbc..*Controller.*(..))")
+    public void serviceStatistics() {
     }
 
     /**
      * 前置通知
      */
-    @Before("serviceStatistics(operation)")
-    public void doBefore(JoinPoint joinPoint, Operation operation) throws Exception {
+    @Before("serviceStatistics()")
+    public void doBefore(JoinPoint joinPoint) throws Exception {
         logger.info("doBefore():{}", joinPoint.toString());
-        //绑定当前线程计算耗时
         threadLocal.set(System.currentTimeMillis());
         Map<String, Object> joinPointInfoMap = RequestUtil.getJoinPointInfoMap(joinPoint);
         log.setRequestUrl(request.getRequestURL().toString());
         log.setRequestStartTime(new Date(System.currentTimeMillis()));
-        log.setClassMethodName(joinPointInfoMap.get("classMethodName").toString());//具体路径
-        log.setClassMethodPath(joinPointInfoMap.get("classMethodPath").toString());//具体路径
+        log.setClassMethodName(joinPointInfoMap.get("classMethodName").toString());
+        log.setClassMethodPath(joinPointInfoMap.get("classMethodPath").toString());
         log.setIp(RequestUtil.getRequestIp(request));
-        log.setOperation(operation.value());
         log.setRequestMethod(request.getMethod());
         log.setUserAgent(request.getHeader("User-Agent"));
         log.setParams(joinPointInfoMap.get("paramMap").toString());
     }
 
-    @After("serviceStatistics(operation)")
-    public void doAfter(JoinPoint joinPoint, Operation operation) {
+    @After("serviceStatistics()")
+    public void doAfter(JoinPoint joinPoint) {
         logger.info("doAfter():{}", joinPoint.toString());
     }
 
-    /**
-     * 返回通知
-     */
-    @AfterReturning(value = "serviceStatistics(operation)", returning = "retrunValue")
-    public void doAfterReturning(Operation operation, Object retrunValue) {
+    @AfterReturning(value = "serviceStatistics()", returning = "retrunValue")
+    public void doAfterReturning(Object retrunValue) {
         logger.info("doAfterReturning(){}");
         log.setReturnTime(new Date(System.currentTimeMillis()));
-        log.setReturnData(JSON.toJSONString(retrunValue, SerializerFeature.DisableCircularReferenceDetect,
-            SerializerFeature.WriteMapNullValue));
         log.setRequestFinshTime(System.currentTimeMillis() - threadLocal.get());
-        LogUtils.saveLog(log);
+        LogUtil.saveLog(log);
     }
 
-    /**
-     * 异常通知
-     */
-    @AfterThrowing(value = "serviceStatistics(operation)", throwing = "e")
-    public void doAfterThrowing(Operation operation, Throwable e) {
+    @AfterThrowing(value = "serviceStatistics()", throwing = "e")
+    public void doAfterThrowing(Throwable e) {
         logger.info("doAfterThrowing(){}" + e);
-        exLog.setcExceptionJson(JSON.toJSONString(e, SerializerFeature.DisableCircularReferenceDetect,
-            SerializerFeature.WriteMapNullValue));
-        exLog.setcExceptionCreateTime(new Date(System.currentTimeMillis()));
-        exLog.setcExceptionMessage(e.getMessage());
-        LogUtils.saveExLogRunnable(exLog);
+        exLog.setExceptionJson(JSON.toJSONString(e));
+        exLog.setExceptionCreateTime(new Date(System.currentTimeMillis()));
+        exLog.setExceptionMessage(e.getMessage());
+        LogUtil.saveExLogRunnable(exLog);
     }
 }
