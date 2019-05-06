@@ -1,7 +1,5 @@
 # kbc-audit
 
-拦截Controller
-
 #pom 校验依赖
 aop依赖
         <dependency>
@@ -22,5 +20,13 @@ fastjson json 依赖注意版本
             <artifactId>fastjson</artifactId>
             <version>1.2.29</version>
         </dependency>
-#注意切面拦截包配置:使用标配置的方法
+#注意拦截器拦截url配置
+~~~ 
+需要在项目的application.properties中配置
+log.allow.origin=
+log.intercept.origin=**
+
+路径解释
+/logs/**：匹配 /logs/ 下的所有路径
+/logs/*：只匹配 /logs/id，不匹配 /logs/id/xxx
 

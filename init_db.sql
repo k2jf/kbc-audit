@@ -1,5 +1,5 @@
 SET FOREIGN_KEY_CHECKS=0;
-DROP TABLE IF EXISTS `kbc_t_audit_log`;
+DROP TABLE IF EXISTS `t_audit_log`;
 CREATE TABLE `t_audit_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '物理主键',
   `c_creator` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '创建者',
