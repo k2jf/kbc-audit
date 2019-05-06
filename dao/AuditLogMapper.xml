@@ -17,7 +17,7 @@
     </resultMap>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.k2data.kbc.audit.model.AuditLog">
-        insert into kbc_t_audit_log (
+        insert into t_audit_log (
         id, c_creator, c_request_start_time,
         c_ip, c_request_url, c_request_method,
         c_user_agent, c_request_finsh_time,
@@ -38,7 +38,7 @@
         c_user_agent, c_request_finsh_time, c_return_time,
         c_class_method_path,c_class_method_name,
         c_params
-        from kbc_t_audit_log
+        from t_audit_log
         <where>
             <if test="creator != null">
                 and c_creator like CONCAT('%', #{creator}, '%')
